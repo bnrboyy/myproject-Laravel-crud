@@ -99,7 +99,6 @@
 
     <script>
         function onCreate() {
-            // console.log('create')
             let data = {
                 name: document.querySelector("#name").value,
                 description: document.querySelector("#desc").value,
