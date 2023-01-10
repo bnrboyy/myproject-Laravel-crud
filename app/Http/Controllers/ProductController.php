@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Exception;
 
-use function PHPSTORM_META\map;
 
 class ProductController extends Controller
 {
@@ -15,6 +14,23 @@ class ProductController extends Controller
         return view('template/home', [
             'products' => $product_list
         ]);
+    }
+
+    public function getAllData() {  // get all data function 
+        $getAllData = Product::get();
+
+        if($getAllData) {
+            return response([
+                'message' => 'ok',
+                'description' => 'Get Data Success',
+                'data' => $getAllData
+            ], 200);
+        } else {
+            return response([
+                'message' => 'error',
+                'description' => 'Get Data Error'
+            ], 401);
+        }
     }
 
     public function onCreate(Request $req) {   // Create Product Function. (client side)
@@ -45,7 +61,7 @@ class ProductController extends Controller
             ], 500);
         } 
     }
-    public function onEdit($id) {
+    public function onEdit($id) {        //get data byId
         $product = Product::where("id", $id)->first();
 
         if($product) {
@@ -62,7 +78,7 @@ class ProductController extends Controller
         }
     }
 
-    public function onUpdate(Request $request) {
+    public function onUpdate(Request $request) {  // Updata data on batabase
         // dd($request);
         $product = Product::where("id", $request->id)->first();
         if($product) {
@@ -85,7 +101,7 @@ class ProductController extends Controller
 
     }
 
-    public function onDelete($id) {
+    public function onDelete($id) {     // Delete function 
         // dd($id);
         $product = Product::where("id", $id)->delete();
 

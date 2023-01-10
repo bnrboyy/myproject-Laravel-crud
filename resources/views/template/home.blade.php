@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Product</title>
 
     <style>
@@ -54,6 +55,7 @@
         </div> 
         <div class="table">
             <h2>Product Table:</h2>
+            <button type="button" onclick="onRefresh()"><i class="fa-solid fa-retweet"></i>refresh</button>
             <table>
                 <tr>
                   <th>No.</th>
@@ -63,19 +65,21 @@
                   <th>Category</th>
                   <th>Action</th>
                 </tr>
-                @foreach ($products as $product)
-                <tr>
-                  <td id="tdid">{{ $product->id }}</td>
-                  <td>{{ $product->p_name }}</td>
-                  <td>{{ $product->p_description }}</td>
-                  <td>{{ $product->p_price }}</td>
-                  <td>{{ $product->p_category }}</td>
-                  <td id="ttd">
-                    <input type="button" value="Edit" onclick="onEdit({{$product->id}})">
-                    <input type="button" value="Delete" onclick="onDelete({{$product->id}})">
-                  </td>
-                </tr>               
+                <tbody class="tbody">
+                    @foreach ($products as $index => $product)
+                    <tr>
+                        <td id="tdid">{{ $index +1 }}</td>
+                        <td>{{ $product->p_name }}</td>
+                        <td>{{ $product->p_description }}</td>
+                        <td>{{ $product->p_price }}</td>
+                        <td>{{ $product->p_category }}</td>
+                        <td id="ttd">
+                            <button type="button" onclick="onEdit({{$product->id}})"><i class="fas fa-edit"></i> Edit</button>
+                            <button type="button" onclick="onDelete({{$product->id}})"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>               
                 @endforeach
+                </tbody>
               </table>
         </div>
     </div>
@@ -178,12 +182,24 @@
                     'Content-type': 'Application/json',
                 }
             }).then(() => {
-                alert('Deleted !!'),
+                alert('Deleted !!')
                 location.reload()
             }).catch(error => {
                 alert('error')
             })
         }
+
+        function onRefresh() {
+            document.querySelector('.tbody').innerHTML = ""
+            axios('api/getAllData')
+                .then(response => {
+                    console.log(response.data.data)
+                    // alert('Getdata success !!!')
+                    // location.reload()
+                }).catch(error => {
+                    alert('error')
+                })
+            }
     </script>
 </body>
 </html>
