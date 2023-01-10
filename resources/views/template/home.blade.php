@@ -16,13 +16,10 @@
         }
         .container {
             display: flex;
-            /* border: 1px solid blue; */
-            /* align-items: center; */
         }
         .table {
             width: 90%;
             margin-left: 2rem;
-            /* border: 1px solid red; */
         }
         .table table {
             width: 100%;
